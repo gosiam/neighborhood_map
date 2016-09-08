@@ -1,29 +1,54 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Best Museums in New York City</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-        <meta charset="utf-8" />
-        <style>
-            .map-responsive{
-                overflow:hidden;
-                padding-bottom:60%;
-                position:relative;
-                height:0;
-            }
-            .map-responsive iframe{
-                left:0;
-                top:0;
-                height:100%;
-                width:100%;
-                position:absolute;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="map-responsive">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24170.60812733578!2d-73.9518964947998!3d40.77684632523607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1473319495891" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
-</div>
-    </body>
+  <head>
+    <title>Styled Maps</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      function initMap() {
 
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 40.674, lng: -73.945},
+          zoom: 12,
+          styles: [
+            {
+              featureType: 'all',
+              stylers: [
+                { saturation: -80 }
+              ]
+            },{
+              featureType: 'road.arterial',
+              elementType: 'geometry',
+              stylers: [
+                { hue: '#00ffee' },
+                { saturation: 50 }
+              ]
+            },{
+              featureType: 'poi.business',
+              elementType: 'labels',
+              stylers: [
+                { visibility: 'off' }
+              ]
+            }
+          ]
+        });
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVtGARqSd-A8jJXiWRsBXfSmCx6HE8s0c&callback=initMap"
+    async defer></script>
+
+  </body>
 </html>
