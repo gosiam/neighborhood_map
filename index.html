@@ -11,40 +11,36 @@
         padding: 0;
       }
       #map {
+        bottom: 0%;
         height: 100%;
-    .panel {
-        height: 100%;
-        width: 30%;
-        text-align: center;
-      }
-      #floating-panel {
+        left: 362px;
         position: absolute;
-        top: 10px;
-        left: 65%;
-        z-index: 5;
+        right: 0px;
+
+      }
+      #options-box {
         height:90%;
+        width: 340px;
         background-color: #fff;
-        padding: 5px;
+        padding: 10px 10px 30px 10px;
         border: 1px solid #999;
-        text-align: center;
+        text-align: left;
         font-family: 'Roboto','sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
+        line-height: 35px;
       }
     </style>
 </head>
   <body>
-    <div id="floating-panel">
+    <div class="container">
+      <div class="options-box">
       <h1>Best Art Museums in New York City</h1>
-      <p><h3>Museum of Modern Art</h3></p>
-      <p><h3>Metropolitan Museum of Art</h3></p>
-      <p><h3>New Museum</h3></p>
-      <p><h3>Solomon R. Guggenheim Museum</h3></p>
-      <p><h3>Whitney Museum of American Art</h3></p>
-      <input id="search" type="textbox" VALUE="">
-      <input id="submit" type="button" value="Search">
+      <div>
+        <input id="show-listings" type="button" VALUE="Show Listings">
+        <input id="hide-listings" type="button" VALUE="Hide Listings">
+      </div>
     </div>
     <div id="map"></div>
+    </div>
 
 
     <script>
@@ -114,9 +110,11 @@
             populateInfoWindow(this, largeInfowindow);
         });
         }
-        // this forces the map to fit itself to the new bounds
-        map.fitBounds(bounds);
-        }
+        //Here are event listeners for the  show and hide buttons
+        document.getElementById('show-listings').addEventListener('click', showListings);
+        document.getElementById('hide-listings').addEventListener('click', hideListings);
+      }
+
 
         // This function populates the infowindo when the marker is clicked.
         // There will be only one infowindow opening at the  marker when the marker is clicked.
@@ -132,7 +130,22 @@
                 });
             }
         }
-
+      //This funciton will loop through the markers array and display them all
+      function showListings() {
+        var bounds = new google.maps.LatLngBounds();
+        //Extend the boundaries of the map for each marker and display the marker
+        for (var i = 0; i < markers.length; i++){
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
+      }
+      map.fitBounds(bounds);
+    }
+         //This funciton will loop through the listings and hide them all
+      function hideListings() {
+        for (var i = 0; i < markers.length; i++){
+        markers[i].setMap(null);
+      }
+    }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAVtGARqSd-A8jJXiWRsBXfSmCx6HE8s0c&callback=initMap" async defer></script>
 
