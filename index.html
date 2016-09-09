@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Styled Maps</title>
+    <title>My Favorite Museums in New York</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
@@ -12,15 +12,56 @@
       }
       #map {
         height: 100%;
+    .panel {
+        height: 100%;
+        width: 30%;
+        text-align: center;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 65%;
+        z-index: 5;
+        height:90%;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
       }
     </style>
-  </head>
+</head>
   <body>
+    <div id="floating-panel">
+      <h1>Best Art Museums in New York City</h1>
+      <p><h3>Museum of Modern Art</h3></p>
+      <p><h3>Metropolitan Museum of Art</h3></p>
+      <p><h3>New Museum</h3></p>
+      <p><h3>Solomon R. Guggenheim Museum</h3></p>
+      <p><h3>Whitney Museum of American Art</h3></p>
+      <input id="search" type="textbox" VALUE="">
+      <input id="submit" type="button" value="Search">
+    </div>
     <div id="map"></div>
-    <script>
-      function initMap() {
 
-        var map = new google.maps.Map(document.getElementById('map'), {
+
+    <script>
+
+    //A new blank erray for all the listing markers
+    var markers = [];
+    var locations = [
+          {title: 'Museum of Modern Art', location: {lat: 40.7614327, lng: -73.9776216,}},
+          {title: 'Metropolitan Museum of Art', location: {lat: 40.7794366, lng: -73.963244,}},
+          {title: 'New Museum', location: {lat: 40.7223376, lng: -73.9928905,}},
+          {title: 'Solomon R. Guggenheim Museum', location: {lat: 40.7829796, lng: -73.9589706,}},
+          {title: 'Whitney Museum of American Art', location: {lat: 40.7395877, lng: -74.0088629,}},
+        ];
+      var map;
+      function initMap() {
+        // Constructor creates a new map -- only center and zoom are required
+        map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 40.674, lng: -73.945},
           zoom: 12,
           styles: [
@@ -45,10 +86,55 @@
             }
           ]
         });
-      }
+        // My farovite museums in New York. If there were more, I should have them in a dabatase
+        var largeInfowindow = new google.maps.InfoWindow();
+        // this is to extend the map boundry in case the marker hits outside of map boundry
+        var bounds = new google.maps.LatLngBounds();
+
+        //The following group uses the location array to create an array of makers on initialize
+
+        for (var i = 0; i < locations.length; i++){
+        //Get the position from the location array
+        var position = locations[i].location;
+        var title = locations[i].title;
+        //Create a marker per location, and put into markers array
+        var marker = new google.maps.Marker({
+            map: map,
+            position: position,
+            title: title,
+            animation: google.maps.Animation.DROP,
+            id: i
+        });
+        //Push the marker to our array of markers
+        markers.push(marker);
+        //Extend the boundaries of the map for each marker
+        bounds.extend(marker.position);
+        //Create an onclick event to open an infowindow at each marker
+        marker.addListener('click', function() {
+            populateInfoWindow(this, largeInfowindow);
+        });
+        }
+        // this forces the map to fit itself to the new bounds
+        map.fitBounds(bounds);
+        }
+
+        // This function populates the infowindo when the marker is clicked.
+        // There will be only one infowindow opening at the  marker when the marker is clicked.
+        function populateInfoWindow(marker, infowindow) {
+            //check to make sure the infowindow is not already opened on this marker
+            if (infowindow.marker = marker) {
+                infowindow.marker = marker;
+                infowindow.setContent('<div>' + marker.title + '</div>');
+                infowindow.open(map, marker);
+                //Makre sure the marker property is cleared if the infowindow is closed
+                infowindow.addListener('closeclick',function(){
+                    infowindow.setMarker(null);
+                });
+            }
+        }
+
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVtGARqSd-A8jJXiWRsBXfSmCx6HE8s0c&callback=initMap"
-    async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAVtGARqSd-A8jJXiWRsBXfSmCx6HE8s0c&callback=initMap" async defer></script>
 
   </body>
 </html>
