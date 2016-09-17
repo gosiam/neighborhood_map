@@ -66,7 +66,7 @@ $(function () {
 
 
         for (var i = 0, len = locations.length ; i < len; i++){
-            // create the location as  a  ko thing 
+            // create the location as  a  ko thing
             // so we can fix the color
 
             var mapLocation = new koLocation(locations[i]);
@@ -146,20 +146,20 @@ $(function () {
                     }
                 }
                 // by resetting the search results
-                // ko magically updates the screen 
+                // ko magically updates the screen
                 mainPlacesToGo.searchResults( searchResults );
             }
         }
         e.onpropertychange = e.oninput; // for IE8
     }
 
-    // we  need this location  so we can set up color as 
+    // we  need this location  so we can set up color as
     // observable.  which means when we call color(something)
     // the html for that item will update hopefully
     function koLocation(location) {
         var self = this;
         self.location = location;
-        self.color =  ko.observable( INACTIVE_COLOR ); 
+        self.color =  ko.observable( INACTIVE_COLOR );
         self.title = location.title;
         self.marker = location.marker;
     }
@@ -249,18 +249,73 @@ $(function () {
         });
     }
 
+    function loadFoursquareInfoMarker(  location  ) {
+        var request = "https://api.foursquare.com/v2/venues/"+location.location.foursquareVenue;
+        request +=  "?client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET + "&v=20140806";
+        // example from W3C School to get data
+        // http://www.w3schools.com/xml/tryit.asp?filename=try_dom_xmlhttprequest_first
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+        } else {
+                // code for older browsers
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+                // 4 means request finished
+                if (this.readyState == 4 ) {
+                    var failure = true;
+                    if ( this.status == 200) {
+                        // console.log( this.responseText );
+                        var response = JSON.parse( this.responseText );
+                        // make sure we have some thing
+                        if ( response && response.response.venue ) {
+                            var venue = response.response.venue;
+                            var description = venue.description ? venue.description : "";
+                            failure = false;
+                            console.log( venue );
+                            location.foursquareInfo = '<div>'+
+                            '<img src="'+venue.bestPhoto.prefix+'200x100'+venue.bestPhoto.suffix+'"/>'+
+                            '<p>'+
+                            '<a href="'+venue.url+'">'+venue.name+'</a>'+
+                            '<p>'+description+'</p>'+
+                            '<a href="'+venue.shortUrl+'">Foursquare Page</a>'+
+                            "</div>";
+                            if ( infowindow.marker === location.marker ) {
+                                infowindow.setContent(location.foursquareInfo );
+                            }
+                        }
+                    }
+
+                    // failure??
+                    if ( failure ) {
+                        if ( infowindow.marker === location.marker ) {
+                            infowindow.setContent('<div>' + "Error loading info for " + location.marker.title + "..." + '</div>');
+                        }
+                    }
+                }
+        };
+        xmlhttp.open("GET", request, true);
+        xmlhttp.send();
+    }
+
     // This function populates the infowindo when the marker is clicked.
     // There will be only one infowindow opening at the  marker when the marker is clicked.
     function populateInfoWindow(marker, infowindow) {
         //check to make sure the infowindow is not already opened on this marker
         if (infowindow.marker = marker) {
             infowindow.marker = marker;
-            infowindow.setContent('<div>' + marker.title + '</div>');
+            if ( marker.location.foursquareInfo ) {
+                infowindow.setContent(marker.location.foursquareInfo);
+            } else {
+                infowindow.setContent('<div>' + "Loading info for " + marker.title + "..." + '</div>');
+                loadFoursquareInfoMarker(  marker.location );
+            }
             infowindow.open(map, marker);
             //Makre sure the marker property is cleared if the infowindow is closed
-            infowindow.addListener('closeclick',function(){
-                // infowindow.setMarker(null); we are closed by the x 
-            });
+            // infowindow.addListener('closeclick',function(){
+            //     // infowindow.setMarker(null); we are closed by the x
+            // });
         }
     }
 
