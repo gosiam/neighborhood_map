@@ -23,26 +23,19 @@
 
         <div class="collapse navbar-collapse navbar-ex1-collapse">
 
-            <ul class="nav navbar-nav">
-                <li><a  style="" id="Musuem0">Museum of Modern Art</a></li>
-                <li><a  id="Musuem1">Metropolitan Museum</a></li>
-                <li><a  id="Musuem2">New Museum</a></li>
-                <li><a  id="Musuem3">Whiteney Museum</a></li>
-                <li><a  id="Musuem4">Guggenheim Museum</a></li>
+            <ul class="nav navbar-nav" data-bind="foreach: placesToGo">
+                 <li><a data-bind="click: $parent.gotoPlace,text: $data.title,style:{color:$data.color}" ></a></li>
             </ul>
 
             <div class="col-sm-3 col-md-3 pull-right">
             <form class="navbar-form" role="search">
-            <div class="input-group search">
-                <input type="text" class="form-control" placeholder="Search for museum" name="srch-term" id="srch-term" list="Musuems">
-                   <ul class="results" >
-                        <li><a href="index.html">Search Result #1<br /><span>Description...</span></a></li>
-                        <li><a href="index.html">Search Result #2<br /><span>Description...</span></a></li>
-                        <li><a href="index.html">Search Result #3<br /><span>Description...</span></a></li>
-                        <li><a href="index.html">Search Result #4</a></li>
+            <div class="input-group search" databind="for-each: placesToGo">
+                <input id="searchBox" type="text" class="form-control" placeholder="Search for museum" name="srch-term" id="srch-term">
+                   <ul class="results" data-bind="foreach: searchResults" >
+                        <li><a data-bind="event: { mousedown : $root.gotoPlace},text: $data.title" ></a></li>
                     </ul>
                 <div class="input-group-btn">
-                    <button class="btn btn-default" onclick="function(){alert("hi")}><i class="glyphicon glyphicon-search"></i></button>
+                    <button class="btn btn-default" onclick="function(){)}><i class="glyphicon glyphicon-search"></i></button>
                 </div>
             </div>
             </form>

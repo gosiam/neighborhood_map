@@ -46,8 +46,7 @@ input {
     -ms-box-shadow: 0 0 2px rgba(85, 168, 236, 0.9);
     -o-box-shadow: 0 0 2px rgba(85, 168, 236, 0.9);
     box-shadow: 0 0 2px rgba(85, 168, 236, 0.9);
-*/
-}
+*/}
 
 .search input:focus + .results { display: block }
 
@@ -102,8 +101,6 @@ input {
     border-bottom: 5px solid #fdfdfd;
     top: -10px;
 }
-
-.search .results li:first-child:hover:before, .search .results li:first-child:hover:after { display: none }
 
 .search .results li:last-child { margin-bottom: -1px }
 
