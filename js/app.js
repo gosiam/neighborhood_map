@@ -87,27 +87,10 @@ $(function () {
             });
              bounds.extend(newMarker.position);
              markers.push( newMarker );
-            //Create an onclick event to open an infowindow at each marker
-            newMarker.addListener('click', function() {
-                populateInfoWindow(this, infowindow);
-            });
 
             // now set up a click listener for each musuem link
-            setupLinkListener( i, newMarker, infowindow );
+            setupLinkAndMarkerListener( i, newMarker, infowindow );
         }
-
-       
-
-           //This funciton will loop through the markers array and display them all
-         //This funciton will loop through the listings and hide them all
-    
-        // for ( var i = 0 ,  infowindow , len = contentStrings.length ; i < len ;  i++ ) {
-        
-
-        //     markers[i].addListener('click', function () {
-        //         infowindow.open( map, marker[i]);
-        //     });
-        // }
 
         var styles = [{"featureType": "landscape", 
                         "stylers": [{"saturation": -100}, 
@@ -118,13 +101,13 @@ $(function () {
         showMusuems();
 
 
-        function hideMusuems() {
-            for (var i = 0; i < markers.length; i++){
-                markers[i].setMap(null);
-            }
+    function hideMusuems() {
+        for (var i = 0; i < markers.length; i++){
+            markers[i].setMap(null);
         }
+    }
 
-      function showMusuems() {
+   function showMusuems() {
         var bounds = new google.maps.LatLngBounds();
         //Extend the boundaries of the map for each marker and display the marker
             for (var i = 0; i < markers.length; i++){
@@ -141,7 +124,7 @@ $(function () {
         elem.style.color = 'rgb(128,128,128)';
     }
 
-    function setupLinkListener( index, newMarker, infoWindow ) {
+    function setupLinkAndMarkerListener( index, newMarker, infoWindow ) {
         let elem= document.getElementById("Musuem"+index)
         elem.style.color = 'rgb(128,128,128)';
         elem.addEventListener('click', function() {
@@ -149,6 +132,13 @@ $(function () {
                 clearTheLastActiveLink();
                 lastActiveLink =  index;
                 populateInfoWindow( newMarker, infoWindow);
+        });
+       //Create an onclick event to open an infowindow at each marker
+       newMarker.addListener('click', function() {
+                elem.style.color = 'rgb(255,255,255)';
+                clearTheLastActiveLink();
+                lastActiveLink =  index;
+                populateInfoWindow(this, infoWindow);
         });
     }
 
