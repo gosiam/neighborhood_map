@@ -81,6 +81,9 @@ input {
 
 .search .results li:first-child { margin-top: -1px }
 
+li { cursor: pointer; cursor: hand;
+}
+
 .search .results li:first-child:before, .search .results li:first-child:after {
     display: block;
     content: '';
@@ -101,6 +104,8 @@ input {
     border-bottom: 5px solid #fdfdfd;
     top: -10px;
 }
+
+.search .results li:first-child:hover:before, .search .results li:first-child:hover:after { display: none }
 
 .search .results li:last-child { margin-bottom: -1px }
 
