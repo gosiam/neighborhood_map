@@ -1,17 +1,19 @@
-// Client id would be kept on server, foursquare does not let us have a demo account
-'use strict'
+/* get rid of jshint global warnings */
+/*globals ko, google, ActiveXObject */
 
+
+// Client id would be kept on server, foursquare does not let us have a demo account
 var CLIENT_ID = "BKB4P410BCSDMNCUN1PZQ3WIKCEVF4X3YKG0P0S1KWCZMT0A";
 // Client secret would be kept on server
 var CLIENT_SECRET = "55SBXGG3SGTEANJGSA1CSTEFVSKZYICXNFUC55JP0KBU1XFI";
-var version =  "v=20140806";
+
 
 // https://api.foursquare.com/v2/venues/41706480f964a520a51d1fe3?client_id=BKB4P410BCSDMNCUN1PZQ3WIKCEVF4X3YKG0P0S1KWCZMT0A&client_secret=55SBXGG3SGTEANJGSA1CSTEFVSKZYICXNFUC55JP0KBU1XFI&v=20140806
 
 // &client_id=CLIENT_ID&client_secret=CLIENT_SECRET
 
-var ACTIVE_COLOR = 'white';
-var INACTIVE_COLOR = 'grey';
+var ACTIVE_COLOR = "white";
+var INACTIVE_COLOR = "grey";
 
 var markers =  []; // our markers
 var map;  // our google map
@@ -20,11 +22,11 @@ var infowindow; // popup information window
 
 // this is the location data for the app
 var locations = [
-    {  title: 'Museum of Modern Art', location: {lat: 40.7614327, lng: -73.9776216}, foursquareVenue : '4af5a46af964a520b5fa21e3'},
-    {  title: 'Metropolitan Museum of Art', location: {lat: 40.7794366, lng: -73.963244}, foursquareVenue : '427c0500f964a52097211fe3'},
-    {  title: 'New Museum', location: {lat: 40.7223376, lng: -73.9928905}, foursquareVenue : '4750accef964a520b24c1fe3'},
-    {  title: 'Whitney Museum of American Art', location: {lat: 40.7395877, lng: -74.0088629}, foursquareVenue : '421a7600f964a5209d1f1fe3'},
-    {  title: 'Solomon R. Guggenheim Museum', location: {lat: 40.7829796, lng: -73.9589706}, foursquareVenue : '41706480f964a520a51d1fe3'}
+    {  title: "Museum of Modern Art", location: {lat: 40.7614327, lng: -73.9776216}, foursquareVenue : "4af5a46af964a520b5fa21e3"},
+    {  title: "Metropolitan Museum of Art", location: {lat: 40.7794366, lng: -73.963244}, foursquareVenue : "427c0500f964a52097211fe3"},
+    {  title: "New Museum", location: {lat: 40.7223376, lng: -73.9928905}, foursquareVenue : "4750accef964a520b24c1fe3"},
+    {  title: "Whitney Museum of American Art", location: {lat: 40.7395877, lng: -74.0088629}, foursquareVenue : "421a7600f964a5209d1f1fe3"},
+    {  title: "Solomon R. Guggenheim Museum", location: {lat: 40.7829796, lng: -73.9589706}, foursquareVenue : "41706480f964a520a51d1fe3"}
 ];
 // this will hold the locations once they are converted
 // to the knockout objects
@@ -39,7 +41,8 @@ var bounds;
 // this is called from onload of the window
 // we need to startup google maps
 function initMap() {
-    var i, len;
+    var i;
+    var len;
 
       // this is to extend the map boundry in case the marker hits outside of map boundry
     bounds = new google.maps.LatLngBounds();
@@ -47,7 +50,7 @@ function initMap() {
     var location = new google.maps.LatLng(40.7414327, -73.9776216);
 
 
-    var mapCanvas = document.getElementById('map');
+    var mapCanvas = document.getElementById("map");
     var mapOptions = {
         center: location,
         zoom: 12,
@@ -57,18 +60,15 @@ function initMap() {
     };
     map = new google.maps.Map(mapCanvas, mapOptions);
 
-    var marker = new google.maps.Marker({
-        map: map
-    });
-
-    var mapLocation, newMarker;
+    var mapLocation;
+    var newMarker;
 
     infowindow = new google.maps.InfoWindow({
         maxWidth: 400
     });
 
-
-    for (i = 0, len = locations.length; i < len; i++){
+    len = locations.length;
+    for (i = 0; i < len; i++){
         // create the location as  a  ko thing
         // so we can fix the color
 
@@ -101,12 +101,12 @@ function initMap() {
                             {"lightness": 65}, {"visibility": "on"}]},
                                 {"featureType": "poi", "stylers": [{"saturation": -100}, {"lightness": 51}, {"visibility": "simplified"}]}, {"featureType": "road.highway", "stylers": [{"saturation": -100}, {"visibility": "simplified"}]}, {"featureType": "road.arterial", "stylers": [{"saturation": -100}, {"lightness": 30}, {"visibility": "on"}]}, {"featureType": "road.local", "stylers": [{"saturation": -100}, {"lightness": 40}, {"visibility": "on"}]}, {"featureType": "transit", "stylers": [{"saturation": -100}, {"visibility": "simplified"}]}, {"featureType": "administrative.province", "stylers": [{"visibility": "off"}]}, {"featureType": "water", "elementType": "labels", "stylers": [{"visibility": "on"}, {"lightness": -25}, {"saturation": -100}]}, {"featureType": "water", "elementType": "geometry", "stylers": [{"hue": "#ffff00"}, {"lightness": -25}, {"saturation": -97}]}];
 
-    map.set('styles', styles);
+    map.set("styles", styles);
 
     // setup the select all which is the element in the upper right
     elemBestMusuemsOfNYC = document.getElementById("BestMusuemsOfNYC");
     elemBestMusuemsOfNYC.style.color =  ACTIVE_COLOR;
-    elemBestMusuemsOfNYC.addEventListener('click', function() {
+    elemBestMusuemsOfNYC.addEventListener("click", function() {
             hideMusuems();
             clearTheLastActiveLink();
             showMusuems();
@@ -123,9 +123,9 @@ function initMap() {
     showMusuems();
 
     // handle search text
-    var e = document.getElementById('searchBox');
+    var e = document.getElementById("searchBox");
     e.oninput =  function() {
-        var e = document.getElementById('searchBox');
+        var e = document.getElementById("searchBox");
         var s = e.value;
         s = s.toLowerCase(); // couldn't find it this is why
         var searchResults = [];
@@ -135,7 +135,8 @@ function initMap() {
             // clear box every things is displayed
             // mainPlacesToGo searchResults when updated
             // magically updates screen
-            for ( i = 0, len = koLocations.length; i < len; i++ ) {
+            len = koLocations.length;
+            for ( i = 0; i < len; i++ ) {
                 location = koLocations[i];
                 searchResults.push( location );
             }
@@ -144,7 +145,8 @@ function initMap() {
             // look for things that have what ever s has in  it
             // mainPlacesToGo searchResults when updated
             // magically updates screen
-            for ( i = 0, len = koLocations.length; i < len; i++ ) {
+            len = koLocations.length;
+            for ( i = 0; i < len; i++ ) {
                 location = koLocations[i];
                 if  (location.title.toLowerCase().search( s ) >= 0 ) {
                     searchResults.push( location );
@@ -172,7 +174,8 @@ function koLocation(location) {
 // make our places to go list for knockout
 function placesToGo() {
     var self = this;
-    var i, len;
+    var i;
+    var len;
     self.placesToGo = koLocations;
 
     // gotoPlace will be our click handle for knockout
@@ -189,8 +192,10 @@ function placesToGo() {
 
 // hide all the musuems
 function hideMusuems(location) {
-    var i, len;
-    for (i = 0, len = locations.length; i < len; i++){
+    var i;
+    var len;
+    len = locations.length;
+    for (i = 0; i < len; i++){
         var loc = koLocations[i];
         if ( loc === koLocations ) {
             continue;
@@ -202,8 +207,11 @@ function hideMusuems(location) {
 // show all the musuems
 function showMusuems() {
     //Extend the boundaries of the map for each marker and display the marker
-    var i, len, marker;
-    for (i = 0, len = koLocations.length; i < len; i++){
+    var i;
+    var len;
+    var marker;
+    len = koLocations.length;
+    for (i = 0; i < len; i++){
         marker = koLocations[i].marker;
         marker.setMap(map);
         bounds.extend(marker.position);
@@ -212,7 +220,8 @@ function showMusuems() {
     map.fitBounds(bounds);
     setTimeout( function() {
         var i, len, marker;
-        for (var i = 0, len = koLocations.length; i < len ; i++){
+        len = koLocations.length;
+        for ( i = 0; i < len ; i++){
             marker = koLocations[i].marker;
             bounceMarker(marker);
         }
@@ -230,7 +239,7 @@ function showOneMusuem( location ) {
     marker.setMap( map );
     bounceMarker(marker);
     // this hides the search results!
-    document.getElementById('searchBox').blur();
+    document.getElementById("searchBox").blur();
 }
 
 function bounceMarker(marker)
@@ -243,7 +252,7 @@ function bounceMarker(marker)
     }
 }
 
-var lastActiveLink = undefined;
+var lastActiveLink;
 
 // we can use ko to set the color
 // property to change colors.
@@ -269,7 +278,7 @@ function showMapPoint( location , infoWindow) {
 function setupLinkAndMarkerListener( location , newMarker, infoWindow ) {
     location.color(INACTIVE_COLOR);
    //Create an onclick event to open an infowindow at each marker
-   newMarker.addListener('click', function() {
+   newMarker.addListener("click", function() {
             showMapPoint( location , infoWindow);
     });
 }
@@ -299,12 +308,12 @@ function loadFoursquareInfoMarker(  location  ) {
                         var description = venue.description ? venue.description : "";
                         failure = false;
                         console.log( venue );
-                        location.foursquareInfo = '<div>'+
-                        '<img src="'+venue.bestPhoto.prefix+'200x100'+venue.bestPhoto.suffix+'"/>'+
-                        '<p>'+
-                        '<a href="'+venue.url+'">'+venue.name+'</a>'+
-                        '<p>'+description+'</p>'+
-                        '<a href="'+venue.shortUrl+'">Foursquare Page</a>'+
+                        location.foursquareInfo = "<div>"+
+                        "<img src=\""+venue.bestPhoto.prefix+"200x100"+venue.bestPhoto.suffix+"\"/>"+
+                        "<p>"+
+                        "<a href=\""+venue.url+"\">"+venue.name+"</a>"+
+                        "<p>"+description+"</p>"+
+                        "<a href=\""+venue.shortUrl+"\">Foursquare Page</a>"+
                         "</div>";
                         if ( infowindow.marker === location.marker ) {
                             infowindow.setContent(location.foursquareInfo );
@@ -315,7 +324,7 @@ function loadFoursquareInfoMarker(  location  ) {
                 // failure??
                 if ( failure ) {
                     if ( infowindow.marker === location.marker ) {
-                        infowindow.setContent('<div>' + "Error loading info for " + location.marker.title + "..." + '</div>');
+                        infowindow.setContent("<div>" + "Error loading info for " + location.marker.title + "..." + "</div>");
                     }
                 }
             }
@@ -324,17 +333,17 @@ function loadFoursquareInfoMarker(  location  ) {
     xmlhttp.send();
 }
 
-var lastOpenTimer = undefined;
+var lastOpenTimer;
 // This function populates the infowindo when the marker is clicked.
 // There will be only one infowindow opening at the  marker when the marker is clicked.
 function populateInfoWindow(marker, infowindow) {
     //check to make sure the infowindow is not already opened on this marker
-    if (infowindow.marker = marker) {
+    if (infowindow.marker != marker) {
         infowindow.marker = marker;
         if ( marker.location.foursquareInfo ) {
             infowindow.setContent(marker.location.foursquareInfo);
         } else {
-            infowindow.setContent('<div>' + "Loading info for " + marker.title + "..." + '</div>');
+            infowindow.setContent("<div>"+ "Loading info for " + marker.title + "..." + "</div>");
             loadFoursquareInfoMarker(  marker.location );
         }
         if ( lastOpenTimer ) {
@@ -357,7 +366,14 @@ function errorGoogleMapsNotLoaded() {
 }
 
 
-
-// google.maps.event.addDomListener(window, 'load', initMap);
+/** get rid of jshint warnings of unused functinos */
+var xIgnore = initMap;
+var yIgnore =  errorGoogleMapsNotLoaded;
+if ( xIgnore === yIgnore ) {
+    initMap();
+    errorGoogleMapsNotLoaded();
+    console.log("jshint will now ignore");
+}
+/** end get rid of jshint warning */
 
 
