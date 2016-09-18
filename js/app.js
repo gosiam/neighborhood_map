@@ -123,18 +123,17 @@
             var e = document.getElementById('searchBox');
             var s = e.value;
             s = s.toLowerCase(); // couldn't find it this is why
+            var searchResults = [];
             if  (s.length === 0 ) {
                 // clear box every things is displayed
                 // mainPlacesToGo searchResults when updated
                 // magically updates screen
-                var searchResults = [];
                 for ( var i = 0 , len = koLocations.length ; i < len; i++ ) {
                     var location = koLocations[i];
                     searchResults.push( location );
                 }
                 mainPlacesToGo.searchResults( searchResults );
             } else {
-                //var searchResults = [];
                 // look for things that have what ever s has in  it
                 // mainPlacesToGo searchResults when updated
                 // magically updates screen
