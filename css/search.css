@@ -131,7 +131,7 @@ li { cursor: pointer; cursor: hand;
     top: 50%;
     right: 10px;
     margin-top: -9px;
-    background: url("http://cssdeck.com/uploads/media/items/7/7BNkBjd.png") 0 0 no-repeat;
+    background: url("7BNkBjd.png") 0 0 no-repeat;
 }
 
 .search .results a:hover {
