@@ -307,7 +307,7 @@ function loadFoursquareInfoMarker(  location  ) {
                         var venue = response.response.venue;
                         var description = venue.description ? venue.description : "";
                         failure = false;
-                        console.log( venue );
+                        //console.log( venue );
                         location.foursquareInfo = "<div>"+
                         "<img src=\""+venue.bestPhoto.prefix+"200x100"+venue.bestPhoto.suffix+"\"/>"+
                         "<p>"+
