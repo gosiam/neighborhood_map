@@ -29,15 +29,15 @@
             </ul>
 
 
-            <div class="col-sm-3 col-md-3 pull-right">
+            <div class="col-sm-3 col-md-3 pull-right" databind="for-each: placesToGo">
             <form class="navbar-form" role="search">
-            <div class="input-group search" databind="for-each: placesToGo">
-                <input id="searchBox" type="text" class="form-control" placeholder="Search for museum" name="srch-term" id="srch-term">
+            <div class="input-group search">
+                <input id="searchBox" type="text" class="form-control" placeholder="Search for museum" name="srch-term">
                    <ul class="results" data-bind="foreach: searchResults" >
                         <li><a data-bind="event: { mousedown : $root.gotoPlace},text: $data.title" ></a></li>
                     </ul>
                 <div class="input-group-btn">
-                    <button class="btn btn-default" onclick="function(){)}><i class="glyphicon glyphicon-search"></i></button>
+                    <button class="btn btn-default" onclick="function(){)}"><i class="glyphicon glyphicon-search"></i></button>
                 </div>
             </div>
             </form>
