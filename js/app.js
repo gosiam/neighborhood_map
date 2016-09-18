@@ -37,7 +37,7 @@
     function initMap() {
 
           // this is to extend the map boundry in case the marker hits outside of map boundry
-        bounds = new google.maps.LatLngBounds(); 
+        bounds = new google.maps.LatLngBounds();
 
         var location = new google.maps.LatLng(40.7414327, -73.9776216);
 
@@ -341,6 +341,10 @@
             //     // infowindow.setMarker(null); we are closed by the x
             // });
         }
+    }
+
+    function errorGoogleMapsNotLoaded() {
+        alert("Unable to load google maps.  Please click OK and then try to refresh page!");
     }
 
 

@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Best Museums of NYC</title>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
         <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
@@ -47,10 +48,10 @@
 
 <div id="map" class="container">
 </div>
-        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.0.0.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxATPFOv_-OG_E0YrsN22J4B2fw_BS-I8&callback=initMap" async defer></script>
-        <script src="js/app.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxATPFOv_-OG_E0YrsN22J4B2fw_BS-I8&callback=initMap" onerror="errorGoogleMapsNotLoaded()" async defer></script>
     </body>
 </html>
