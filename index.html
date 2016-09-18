@@ -33,7 +33,7 @@
             <form class="navbar-form" role="search">
             <div class="input-group search" databind="with: placesToGo">
                 <input id="searchBox" type="text" class="form-control" placeholder="Search for museum" name="srch-term"
-                      data-bind="textInput : searchTerm">
+                      data-bind="value: searchTerm, valueUpdate:'afterkeydown'">
                    <ul class="results" data-bind="foreach: searchResults" >
                         <li><a data-bind="event: { mousedown : $root.gotoPlace},text: $data.title" ></a></li>
                     </ul>

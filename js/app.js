@@ -145,9 +145,8 @@ function initMap() {
     var e = document.getElementById("searchBox");
 }
 
-function updateSearch() {
-  var e = document.getElementById("searchBox");
-  var s = e.value;
+function updateSearch(newValue) {
+  var s = newValue;
   s = s.toLowerCase(); // couldn't find it this is why
   var searchResults = [];
   var location;
@@ -199,11 +198,13 @@ function placesToGo() {
 
     self.searchTerm = ko.observable("");
     self.searchTerm.subscribe(function(newValue) {
-      alert("The person's new name is " + newValue);
+      updateSearch(newValue);
     });
 
     // gotoPlace will be our click handle for knockout
     self.gotoPlace = function(location) {
+        // clear last search results
+        mainPlacesToGo.searchTerm("");
         showMapPoint( location , infowindow);
     };
 
