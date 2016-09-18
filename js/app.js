@@ -17,7 +17,6 @@ var INACTIVE_COLOR = "grey";
 
 var markers =  []; // our markers
 var map;  // our google map
-var elemBestMusuemsOfNYC; // need to change text color
 var infowindow; // popup information window
 
 // this is the location data for the app
@@ -116,20 +115,6 @@ function initMap() {
 
     map.set("styles", styles);
 
-    // setup the select all which is the element in the upper right
-    elemBestMusuemsOfNYC = document.getElementById("BestMusuemsOfNYC");
-    elemBestMusuemsOfNYC.style.color =  ACTIVE_COLOR;
-    elemBestMusuemsOfNYC.addEventListener("click", function() {
-            hideMusuems();
-            clearTheLastActiveLink();
-            showMusuems();
-            elemBestMusuemsOfNYC.style.color =  ACTIVE_COLOR;
-            infowindow.close();
-            // for our bootstrap navbar add a handler to close
-            // on selecting a musuem
-            $('.navbar-collapse').collapse('hide');
-    });
-
     // ko.options = {};
     //ko.options.useOnlyNativeEvents = true;
 
@@ -141,8 +126,22 @@ function initMap() {
     // show all the museums markers
     showMusuems();
 
+    /*** WITH THE REVIEW COMMENT 
+    On line 145, the search text should be handled with a Knockout binding. Checkout the textinput binding.
+    http://knockoutjs.com/documentation/textinput-binding.html 
+    */
     // handle search text
-    var e = document.getElementById("searchBox");
+    // this line was a mistake it was just left over and should have deleted or commented out
+    // var e was never used
+    // Please look where updateSearch is called from.
+    // It is called from the knockoutjs binding subscribing to the input box
+    // on line 205 
+    // I have removed the line below by commenting out
+    // please read the code to see that I am using knockoutjs
+    // for the new value is which then generates a new
+    //  ko observable array called searchResults
+    //
+    // var e = document.getElementById("searchBox");
 }
 
 function updateSearch(newValue) {
@@ -201,12 +200,26 @@ function placesToGo() {
       updateSearch(newValue);
     });
 
+    self.bestMusuemLinkColor =  ko.observable( ACTIVE_COLOR );
+
     // gotoPlace will be our click handle for knockout
     self.gotoPlace = function(location) {
         // clear last search results
         mainPlacesToGo.searchTerm("");
         showMapPoint( location , infowindow);
     };
+
+    self.showAll = function() {
+        // setup the select all which is the element in the upper right
+        hideMusuems();
+        clearTheLastActiveLink();
+        showMusuems();
+        infowindow.close();
+        self.bestMusuemLinkColor( ACTIVE_COLOR );
+        // for our bootstrap navbar add a handler to close
+        // on selecting a musuem
+        $('.navbar-collapse').collapse('hide');
+    }
 
     var results = [];
     for ( i = 0 , len = koLocations.length; i < len ; i++ ) {
@@ -289,10 +302,9 @@ function clearTheLastActiveLink() {
     if ( lastActiveLink ) {
         lastActiveLink.color( INACTIVE_COLOR );
     }
-    // var  elem= document.getElementById("Musuem"+lastActiveLink)
-    // elem.style.color =  INACTIVE_COLOR;
     // clear the select all
-    elemBestMusuemsOfNYC.style.color =  INACTIVE_COLOR;
+    mainPlacesToGo.bestMusuemLinkColor( INACTIVE_COLOR );
+
 }
 
 function showMapPoint( location , infoWindow) {

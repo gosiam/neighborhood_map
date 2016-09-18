@@ -12,14 +12,14 @@
     <body>
     <div class="navbar navbar-inverse navbar-static-top" role="navigation">
 
-        <div class="navbar-header">
+        <div class="navbar-header" data-bind="with: placesToGo">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" id="BestMusuemsOfNYC" title="Best Museums of NYC">Best Museums of NYC</a>
+            <a class="navbar-brand" id="BestMusuemsOfNYC" title="Best Museums of NYC" data-bind="event: { mousedown : $root.showAll}, style:{color:$root.bestMusuemLinkColor}">Best Museums of NYC</a>
         </div>
 
         <div class="collapse navbar-collapse navbar-ex1-collapse">
