@@ -37,10 +37,23 @@ var mainPlacesToGo;
 
 var bounds;
 
+var mapsLoaded = false;
+var windowLoaded = false;
+
+function mapsDoneLoading() {
+  mapsLoaded = true;
+  google.maps.event.addDomListener(window, 'load', function() {
+    windowLoaded = true;
+    initMap();
+  });
+}
 
 // this is called from onload of the window
 // we need to startup google maps
 function initMap() {
+    if ( !mapsLoaded ) {
+      return;
+    }
     var i;
     var len;
 
@@ -112,7 +125,13 @@ function initMap() {
             showMusuems();
             elemBestMusuemsOfNYC.style.color =  ACTIVE_COLOR;
             infowindow.close();
+            // for our bootstrap navbar add a handler to close
+            // on selecting a musuem
+            $('.navbar-collapse').collapse('hide');
     });
+
+    // ko.options = {};
+    //ko.options.useOnlyNativeEvents = true;
 
     // create the main ko class
     mainPlacesToGo = new placesToGo();
@@ -124,40 +143,40 @@ function initMap() {
 
     // handle search text
     var e = document.getElementById("searchBox");
-    e.oninput =  function() {
-        var e = document.getElementById("searchBox");
-        var s = e.value;
-        s = s.toLowerCase(); // couldn't find it this is why
-        var searchResults = [];
-        var location;
-        var i, len;
-        if  (s.length === 0 ) {
-            // clear box every things is displayed
-            // mainPlacesToGo searchResults when updated
-            // magically updates screen
-            len = koLocations.length;
-            for ( i = 0; i < len; i++ ) {
-                location = koLocations[i];
-                searchResults.push( location );
-            }
-            mainPlacesToGo.searchResults( searchResults );
-        } else {
-            // look for things that have what ever s has in  it
-            // mainPlacesToGo searchResults when updated
-            // magically updates screen
-            len = koLocations.length;
-            for ( i = 0; i < len; i++ ) {
-                location = koLocations[i];
-                if  (location.title.toLowerCase().search( s ) >= 0 ) {
-                    searchResults.push( location );
-                }
-            }
-            // by resetting the search results
-            // ko magically updates the screen
-            mainPlacesToGo.searchResults( searchResults );
-        }
-    };
-    e.onpropertychange = e.oninput; // for IE8
+}
+
+function updateSearch() {
+  var e = document.getElementById("searchBox");
+  var s = e.value;
+  s = s.toLowerCase(); // couldn't find it this is why
+  var searchResults = [];
+  var location;
+  var i, len;
+  if  (s.length === 0 ) {
+      // clear box every things is displayed
+      // mainPlacesToGo searchResults when updated
+      // magically updates screen
+      len = koLocations.length;
+      for ( i = 0; i < len; i++ ) {
+          location = koLocations[i];
+          searchResults.push( location );
+      }
+      mainPlacesToGo.searchResults( searchResults );
+  } else {
+      // look for things that have what ever s has in  it
+      // mainPlacesToGo searchResults when updated
+      // magically updates screen
+      len = koLocations.length;
+      for ( i = 0; i < len; i++ ) {
+          location = koLocations[i];
+          if  (location.title.toLowerCase().search( s ) >= 0 ) {
+              searchResults.push( location );
+          }
+      }
+      // by resetting the search results
+      // ko magically updates the screen
+      mainPlacesToGo.searchResults( searchResults );
+  }
 }
 
 // we  need this location  so we can set up color as
@@ -177,6 +196,11 @@ function placesToGo() {
     var i;
     var len;
     self.placesToGo = koLocations;
+
+    self.searchTerm = ko.observable("");
+    self.searchTerm.subscribe(function(newValue) {
+      alert("The person's new name is " + newValue);
+    });
 
     // gotoPlace will be our click handle for knockout
     self.gotoPlace = function(location) {
@@ -240,6 +264,10 @@ function showOneMusuem( location ) {
     bounceMarker(marker);
     // this hides the search results!
     document.getElementById("searchBox").blur();
+
+    // for our bootstrap navbar add a handler to close
+    // on selecting a musuem
+    $('.navbar-collapse').collapse('hide');
 }
 
 function bounceMarker(marker)
@@ -375,5 +403,3 @@ if ( xIgnore === yIgnore ) {
     console.log("jshint will now ignore");
 }
 /** end get rid of jshint warning */
-
-
