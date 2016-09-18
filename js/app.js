@@ -1,5 +1,3 @@
-$(function () {
-
     // Client id would be kept on server, foursquare does not let us have a demo account
 
     var CLIENT_ID = "BKB4P410BCSDMNCUN1PZQ3WIKCEVF4X3YKG0P0S1KWCZMT0A"
@@ -38,6 +36,9 @@ $(function () {
     // we need to startup google maps
     function initMap() {
 
+          // this is to extend the map boundry in case the marker hits outside of map boundry
+        bounds = new google.maps.LatLngBounds(); 
+
         var location = new google.maps.LatLng(40.7414327, -73.9776216);
 
 
@@ -50,8 +51,6 @@ $(function () {
             mapTypeId: google.maps.MapTypeId.ROADMAP
         }
         map = new google.maps.Map(mapCanvas, mapOptions);
-          // this is to extend the map boundry in case the marker hits outside of map boundry
-        var bounds = new google.maps.LatLngBounds();
 
         var markerImage = 'images/marker.png';
 
@@ -192,7 +191,7 @@ $(function () {
         }
     }
 
-   var bounds = new google.maps.LatLngBounds();
+   var bounds;
    // show all the musuems
    function showMusuems() {
         //Extend the boundaries of the map for each marker and display the marker
@@ -200,22 +199,39 @@ $(function () {
             var marker = koLocations[i].marker;
             marker.setMap(map);
             bounds.extend(marker.position);
+            bounceMarker(marker);
         }
         map.fitBounds(bounds);
-    }
+        setTimeout( function() {
+             for (var i = 0, len = koLocations.length ; i < len ; i++){
+                var marker = koLocations[i].marker;
+                bounceMarker(marker);
+             }
+         }, 300 );
+     }
 
     // show one musuem selected and zoom
     // in on it
     function showOneMusuem( location ) {
         var marker =  location.marker;
-        marker.setMap(map);
         bounds.extend(marker.position);
         map.fitBounds(bounds);
         map.setZoom(17);
         map.panTo(marker.position);
-
+        marker.setMap( map );
+        bounceMarker(marker);
         // this hides the search results!
         document.getElementById('searchBox').blur();
+    }
+
+    function bounceMarker(marker)
+    {
+        if (marker.getAnimation() !== null) {
+          marker.setAnimation(null);
+        } else {
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+          setTimeout( function() { bounceMarker(marker); } , 800 );
+        }
     }
 
     var lastActiveLink = undefined;
@@ -299,6 +315,7 @@ $(function () {
         xmlhttp.send();
     }
 
+    var lastOpenTimer = undefined;
     // This function populates the infowindo when the marker is clicked.
     // There will be only one infowindow opening at the  marker when the marker is clicked.
     function populateInfoWindow(marker, infowindow) {
@@ -311,7 +328,14 @@ $(function () {
                 infowindow.setContent('<div>' + "Loading info for " + marker.title + "..." + '</div>');
                 loadFoursquareInfoMarker(  marker.location );
             }
-            infowindow.open(map, marker);
+            if ( lastOpenTimer ) {
+                clearTimeout( lastOpenTimer );
+                lastOpenTimer = undefined;
+            }
+            lastOpenTimer = setTimeout( function() {
+                        lastOpenTimer = undefined;
+                        infowindow.open(map, marker);
+                    }, 500 );
             //Makre sure the marker property is cleared if the infowindow is closed
             // infowindow.addListener('closeclick',function(){
             //     // infowindow.setMarker(null); we are closed by the x
@@ -321,6 +345,6 @@ $(function () {
 
 
 
-    google.maps.event.addDomListener(window, 'load', initMap);
-});
+    // google.maps.event.addDomListener(window, 'load', initMap);
+
 
