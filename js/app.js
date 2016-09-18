@@ -1,9 +1,9 @@
     // Client id would be kept on server, foursquare does not let us have a demo account
 
-    var CLIENT_ID = "BKB4P410BCSDMNCUN1PZQ3WIKCEVF4X3YKG0P0S1KWCZMT0A"
+    var CLIENT_ID = "BKB4P410BCSDMNCUN1PZQ3WIKCEVF4X3YKG0P0S1KWCZMT0A";
     // Client secret would be kept on server
-    var CLIENT_SECRET = "55SBXGG3SGTEANJGSA1CSTEFVSKZYICXNFUC55JP0KBU1XFI"
-    var version =  "v=20140806"
+    var CLIENT_SECRET = "55SBXGG3SGTEANJGSA1CSTEFVSKZYICXNFUC55JP0KBU1XFI";
+    var version =  "v=20140806";
 
     // https://api.foursquare.com/v2/venues/41706480f964a520a51d1fe3?client_id=BKB4P410BCSDMNCUN1PZQ3WIKCEVF4X3YKG0P0S1KWCZMT0A&client_secret=55SBXGG3SGTEANJGSA1CSTEFVSKZYICXNFUC55JP0KBU1XFI&v=20140806
 
@@ -49,7 +49,7 @@
             panControl: false,
             scrollwheel: false,
             mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
+        };
         map = new google.maps.Map(mapCanvas, mapOptions);
 
         var markerImage = 'images/marker.png';
@@ -134,7 +134,7 @@
                 }
                 mainPlacesToGo.searchResults( searchResults );
             } else {
-                var searchResults = [];
+                //var searchResults = [];
                 // look for things that have what ever s has in  it
                 // mainPlacesToGo searchResults when updated
                 // magically updates screen
@@ -148,7 +148,7 @@
                 // ko magically updates the screen
                 mainPlacesToGo.searchResults( searchResults );
             }
-        }
+        };
         e.onpropertychange = e.oninput; // for IE8
     }
 
@@ -336,7 +336,7 @@
                         lastOpenTimer = undefined;
                         infowindow.open(map, marker);
                     }, 500 );
-            //Makre sure the marker property is cleared if the infowindow is closed
+            //Make sure the marker property is cleared if the infowindow is closed
             // infowindow.addListener('closeclick',function(){
             //     // infowindow.setMarker(null); we are closed by the x
             // });
